@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 90vh;
+            width: 100%;
+        }
+        #option-chossen {
+            margin: 5vh 0;
+        }
+    </style>
+    <!-- Replace the value of the key parameter with your own API key. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHeLJigXlN-myXIDGKVTP2JBGEFFaRvSk&callback=initMap"
+        async defer></script>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            /*
+            Create new Map LatLog based on positon
+            NAME = NEW POSITION
+            */
+            var CTC_HILTON_SG = new google.maps.LatLng(10.775111, 106.705625);  //CTC_HILTON SG
+            var RIC_VCC = new google.maps.LatLng(10.780270, 106.707106);  //RIC_VCC
+            var CTC_29_NGUYEN_DINH_CHIEU = new google.maps.LatLng(10.787152, 106.698487); // CTC_29 NGUYỄN ĐÌNH CHIỂU
+            var RIC_KINGDOM_101 = new google.maps.LatLng(10.776014, 106.661644); //  RIC_KINGDOM 101
+            var CTC_KINHDOM_101 = new google.maps.LatLng(10.776014, 106.661644); //CTC_KINHDOM 101
+            var UNI_HA_DO_Q10 = new google.maps.LatLng(10.775569, 106.678789); //UNI_HA DO - Q10
+            var UNI_ASIANA_TAN_PHU = new google.maps.LatLng(10.803204, 106.691151); // UNI_ASIANA TÂN PHÚ
+            var CTC_TON_THAT_THUYET = new google.maps.LatLng(10.753204, 106.691478); // CTC_TÔN THẤT THUYẾT
+            var CTC_DIAMOND_LOTUS = new google.maps.LatLng(10.747967, 106.676652); //CTC_DIAMOND LOTUS
+            var CTC_NAM_LONG = new google.maps.LatLng(10.747200, 106.655281); //CTC_NAM LONG
+            var RIC_DONG_A_LAND = new google.maps.LatLng(10.737137, 106.740162); // RIC_ĐÔNG Á LAND
+            var RIC_PANORAMA = new google.maps.LatLng(10.737079, 106.739126); // RIC_PANORAMA
+            var RIC_PAIHO = new google.maps.LatLng(10.757886, 106.559830); //RIC_PAIHO
+            var RIC_SWANPARK = new google.maps.LatLng(10.722071, 106.869356); //RIC_SWANPARK
+            var FDC_WEPRO = new google.maps.LatLng(10.728891, 106.720032); //FDC_WEPRO
+            var FDC_TBS = new google.maps.LatLng(10.899482, 106.822975); //FDC_TBS
+            var CTC_LANCER = new google.maps.LatLng(10.776931, 106.750944); //CTC_LANCER
+            var CTC_DIAMOND_ISLAND_2 = new google.maps.LatLng(10.778812, 106.746785); //CTC_DIAMOND ISLAND 2
+            var CTC_DAI_QUANG_MINH = new google.maps.LatLng(10.769623, 106.716525); // CTC_ĐẠI QUANG MINH
+            var FDC_SOL_VILLA = new google.maps.LatLng(10.770324, 106.781587); //FDC_SOL VILLA
+            var UNI_SARINA_DQM = new google.maps.LatLng(10.770110, 106.718293); //UNI_SARINA - DQM
+            var UNI_TRUONG_HOC_DQM = new google.maps.LatLng(10.770110, 106.718293); // UNI_TRUONG HOC - DQM
+            var CTC_L81 = new google.maps.LatLng(10.797265, 106.723210); // CTC_L81
+            var UNI_PRECHE = new google.maps.LatLng(10.803258, 106.746398); //UNI_PRECHE
+            var UNI_G_HOMES = new google.maps.LatLng(10.804410, 106.747192); //UNI_G-HOMES
+            var UNI_CITY_LAND_GV = new google.maps.LatLng(10.828707, 106.681237); //UNI_CITY LAND GV
+            var CTC_GAINLUCKY = new google.maps.LatLng(11.146475, 106.334226); // CTC_GAINLUCKY
+            var RIC_BROTEX = new google.maps.LatLng(11.151993, 106.333445); //RIC_BROTEX
+            var RIC_BILLION = new google.maps.LatLng(11.134359, 106.342063); //RIC_BILLION
+            var FDC_GAINLUCKY = new google.maps.LatLng(11.146475, 106.342063); //FDC_GAINLUCKY
+            var FDC_SPOWER = new google.maps.LatLng(11.029153, 106.324548); //FDC_SPOWER
+            var CTC_WORLDON = new google.maps.LatLng(10.967386, 106.620298); //CTC_WORLDON
+            var CTC_MANWAH = new google.maps.LatLng(11.043342, 106.775396); //CTC_MANWAH
+            var RIC_MANWAH = new google.maps.LatLng(11.043342, 106.775396); //RIC_MANWAH
+            var UNI_ACCREDO_BD = new google.maps.LatLng(11.156103, 106.691017); // UNI_ACCREDO BD
+            var UNI_TETRA_PAK = new google.maps.LatLng(11.151790, 106.703522); // UNI_TETRA PAK
+            var UNI_EVERGREEN_BD = new google.maps.LatLng(11.112133, 106.793804); //UNI_EVERGREEN BD
+            var UNI_UNIBEN_BD = new google.maps.LatLng(11.147827, 106.700652); //UNI_UNIBEN BD
+            var UNI_DENEAST = new google.maps.LatLng(11.074495, 106.700652); //UNI_DENEAST
+            var FDC_PAIHONG = new google.maps.LatLng(11.204066, 106.718644); //FDC_PAIHONG
+            var CTC_HO_TRAM_2 = new google.maps.LatLng(10.486902, 107.453791); //CTC_HỒ TRAM 2
+            var UNI_VIGLACERA = new google.maps.LatLng(10.645728, 107.025417); //UNI_VIGLACERA
+            var CTC_KHO_BD = new google.maps.LatLng(10.961180, 106.732659); //CTC_KHO BÌNH DƯƠNG
+            var UNI_KHO_BD = new google.maps.LatLng(10.964793, 106.751463); //UNI_KHO BÌNH DƯƠNG
+            var RIC_KHO_BD = new google.maps.LatLng(10.964381, 106.750748); //RIC_KHO BÌNH DƯƠNG
+            var FDC_KHO_LA = new google.maps.LatLng(10.798609, 106.706217); //FDC_KHO LONG AN
+            var AN_GIA_MINH = new google.maps.LatLng(11.02604, 106.705149); //AN GIA MINH
+            var VINH_CAO = new google.maps.LatLng(10.985415, 106.734732); //VINH CAO
+            var KIM_LONG = new google.maps.LatLng(10.942181, 106.73949); //KIM LONG
+            var THANH_LONG_169 = new google.maps.LatLng(10.957118, 106.734146); //THÀNH LONG 169
+            var MINI = new google.maps.LatLng(10.965252, 106.71582); //MINI
+            var HAI_PHUOC = new google.maps.LatLng(10.986152, 106.779445); //HAI PHƯỚC
+            var HUNG_VIET = new google.maps.LatLng(10.742183, 106.542294); //HƯNG VIỆT
+            var ANH_QUAN = new google.maps.LatLng(10.888485, 106.781762); //ANH QUÂN
+            var THAI_DUONG = new google.maps.LatLng(10.928803, 106.602171); //THÁI DƯƠNG
+            var SAKI = new google.maps.LatLng(11.031863, 106.698491); //SAKI
+            var HDC = new google.maps.LatLng(10.876708, 106.697274); //HDC
+            var Sugiko = new google.maps.LatLng(10.670739, 106.55999); //Sugiko
+            var INDOCHINA = new google.maps.LatLng(10.635898, 106.660316); //INDOCHINA
+            var HAI_PHAN = new google.maps.LatLng(10.870823, 106.574199); //HAI PHAN
+            var LINH_PHONG = new google.maps.LatLng(10.624134, 106.484665); //LINH PHONG
+            var G18 = new google.maps.LatLng(10.714671, 106.574745); //G18
+            var TTP = new google.maps.LatLng(10.716349, 106.65109); //TTP
+            var SG_Royal = new google.maps.LatLng(10.778296, 106.699477); //SG Royal
+            var A_ABD_B_NT = new google.maps.LatLng(12.240469, 109.196441); //A&B NT
+            var Loteco = new google.maps.LatLng(10.930674, 106.885201); //Loteco
+            var Vincity_Q9 = new google.maps.LatLng(10.84011, 106.829559); //Vincity Q9
+            var HOA_PHAT_DUNG_QUAT = new google.maps.LatLng(15.366622, 108.80056); //Hoà Phát Dung Quất
+            var TIME_SQUARE_DN = new google.maps.LatLng(16.070169, 108.244953); //Times Square Đà Nẵng
+            var TIMBERLAND = new google.maps.LatLng(11.043614, 106.775133); //TIMBERLAND
+            // Data Binding for map
+            var listData = [
+                {
+                    id: 1,
+                    content: [
+                        'SG_Royal',
+                        'KIM LONG'
+                    ],
+                    data: [
+                        SG_Royal,
+                        KIM_LONG,
+                    ],
+                    color: '#1f5ec4'
+                },
+                {
+                    id: 2,
+                    content: [
+                        'RIC_BILLION',
+                        'KIM LONG'
+                    ],
+                    data: [
+                        RIC_BILLION,
+                        KIM_LONG,
+                    ],
+                    color: '#0d5e72'
+                },
+                {
+                    id: 3,
+                    content: [
+                        'RIC_PAIHO',
+                        'KIM LONG'
+                    ],
+                    data: [
+                        INDOCHINA,
+                        KIM_LONG,
+                    ],
+                    color: '#20c115'
+                },
+                {
+                    id: 4,
+                    content: [
+                        'KIM LONG',
+                        'RIC_MANWAH'
+                    ],
+                    data: [
+                        KIM_LONG,
+                        RIC_MANWAH,
+                    ],
+                    color: '#60340e'
+                },
+                {
+                    id: 5,
+                    content: [
+                        'RIC_BILLION',
+                        'RIC_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        RIC_BILLION,
+                        RIC_KHO_BD,
+                    ],
+                    color: '#c4a387'
+                },
+                {
+                    id: 6,
+                    content: [
+                        'RIC_PANORAMA',
+                        'TTP'
+                    ],
+                    data: [
+                        RIC_PANORAMA,
+                        TTP,
+                    ],
+                    color: '#d3cd1d'
+                },
+                {
+                    id: 7,
+                    content: [
+                        'RIC_BROTEX',
+                        'TTP'
+                    ],
+                    data: [
+                        RIC_BROTEX,
+                        TTP,
+                    ],
+                    color: '#6e9b5d'
+                },
+                {
+                    id: 8,
+                    content: [
+                        'A&B NT',
+                        'UNI_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        A_ABD_B_NT,
+                        UNI_KHO_BD,
+                    ],
+                    color: '#2c7510'
+                },
+                {
+                    id: 9,
+                    content: [
+                        'FDC_GAINLUCKY',
+                        'UNI_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        FDC_GAINLUCKY,
+                        UNI_KHO_BD,
+                    ],
+                    color: '#2b775d'
+                },
+                {
+                    id: 10,
+                    content: [
+                        'UNI_HA DO - Q10',
+                        'ANH QUÂN'
+                    ],
+                    data: [
+                        UNI_HA_DO_Q10,
+                        ANH_QUAN,
+                    ],
+                    color: '#04ef9f'
+                },
+                {
+                    id: 11,
+                    content: [
+                        'UNI_KHO BÌNH DƯƠNG',
+                        'Loteco'
+                    ],
+                    data: [
+                        UNI_KHO_BD,
+                        Loteco,
+                    ],
+                    color: '#13405e'
+                },
+                {
+                    id: 12,
+                    content: [
+                        'UNI_PRECHE',
+                        'UNI_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        UNI_PRECHE,
+                        UNI_KHO_BD,
+                    ],
+                    color: '#a82b8f'
+                },
+                {
+                    id: 13,
+                    content: [
+                        'UNI_HA DO - Q10',
+                        'Vincity Q9'
+                    ],
+                    data: [
+                        UNI_HA_DO_Q10,
+                        Vincity_Q9,
+                    ],
+                    color: '#660652'
+                },
+                {
+                    id: 14,
+                    content: [
+                        'UNI_KHO BÌNH DƯƠNG',
+                        'Vincity Q9'
+                    ],
+                    data: [
+                        UNI_KHO_BD,
+                        Vincity_Q9,
+                    ],
+                    color: '#d30e60'
+                },
+                {
+                    id: 15,
+                    content: [
+                        'UNI_KHO BÌNH DƯƠNG',
+                        'CTC_MANWAH'
+                    ],
+                    data: [
+                        UNI_KHO_BD,
+                        CTC_MANWAH,
+                    ],
+                    color: '#3d031b'
+                },
+                {
+                    id: 16,
+                    content: [
+                        'Hà Đô',
+                        'CTC_MANWAH'
+                    ],
+                    data: [
+                        UNI_HA_DO_Q10,
+                        CTC_MANWAH,
+                    ],
+                    color: '#d10e1b'
+                },
+                {
+                    id: 17,
+                    content: [
+                        'Sugiko',
+                        'Vincity Q9'
+                    ],
+                    data: [
+                        Sugiko,
+                        Vincity_Q9,
+                    ],
+                    color: '#144c28'
+                },
+                {
+                    id: 18,
+                    content: [
+                        'RIC_BILLION',
+                        'UNI_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        RIC_BILLION,
+                        UNI_KHO_BD,
+                    ],
+                    color: '#58916c'
+                },
+                {
+                    id: 19,
+                    content: [
+                        'CTC_KHO BÌNH DƯƠNG',
+                        'CTC_ĐẠI QUANG MINH'
+                    ],
+                    data: [
+                        CTC_KHO_BD,
+                        CTC_DAI_QUANG_MINH,
+                    ],
+                    color: '#877b16'
+                },
+                {
+                    id: 20,
+                    content: [
+                        'CTC_KHO BÌNH DƯƠNG',
+                        'CTC_KINHDOM 101'
+                    ],
+                    data: [
+                        CTC_KHO_BD,
+                        CTC_KINHDOM_101,
+                    ],
+                    color: '#3c04cc'
+                },
+                {
+                    id: 21,
+                    content: [
+                        'CTC_DIAMOND LOTUS',
+                        'CTC_MANWAH'
+                    ],
+                    data: [
+                        CTC_DIAMOND_LOTUS,
+                        CTC_MANWAH,
+                    ],
+                    color: '#08011c'
+                },
+                {
+                    id: 22,
+                    content: [
+                        'ANH QUÂN',
+                        'CTC_29 NGUYỄN ĐÌNH CHIỂU'
+                    ],
+                    data: [
+                        ANH_QUAN,
+                        CTC_29_NGUYEN_DINH_CHIEU,
+                    ],
+                    color: '#ad58ce'
+                },
+                {
+                    id: 23,
+                    content: [
+                        'Hoà Phát Dung Quất',
+                        'CTC_KHO BÌNH DƯƠNG'
+                    ],
+                    data: [
+                        HOA_PHAT_DUNG_QUAT,
+                        CTC_KHO_BD,
+                    ],
+                    color: '#50056d'
+                },
+                {
+                    id: 24,
+                    content: [
+                        'TTP',
+                        'TIMBERLAND'
+                    ],
+                    data: [
+                        TTP,
+                        TIMBERLAND,
+                    ],
+                    color: '#b091bc'
+                },
+            ];
+            // // 
+            // var listStart = [
+            //     {
+            //         id: 23,
+            //         name: 'TIMBERLAND',
+            //         position: TIMBERLAND
+            //     }
+            // ];
+            // var listEnd = [
+            //     {
+            //         id: 20,
+            //         name: 'CTC_DIAMOND LOTUS',
+            //         position: CTC_DIAMOND_LOTUS
+            //     },
+            //     {
+            //         id: 21,
+            //         name: 'CTC_29 NGUYỄN ĐÌNH CHIỂU',
+            //         position: CTC_29_NGUYEN_DINH_CHIEU
+            //     },
+            //     {
+            //         id: 22,
+            //         name: 'Hoà Phát Dung Quất',
+            //         position: HOA_PHAT_DUNG_QUAT
+            //     },
+            //     {
+            //         id: 23,
+            //         name: 'TIMBERLAND',
+            //         position: TIMBERLAND
+            //     }
+            // ];
+            var lsPositionResult = [];
+            var map;
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var mapOptions = {
+                center: { lat: 10.762622, lng: 106.660172 }, // Default TP HCM
+                zoom: 10
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            directionsDisplay.setMap(map);
+            // Cal Distance
+            // for (let index = 0; index < listStart.length; index++) {
+            //     for (let indexEnd = 0; indexEnd < listEnd.length; indexEnd++) {
+            //         if (listStart[index] && listEnd[indexEnd] && listStart[index].name !== listEnd[indexEnd].name) {
+            //             calculateAndDisplayRoute(
+            //                 directionsService, directionsDisplay, listStart[index].position, listEnd[indexEnd].position, listStart[index].name, listEnd[indexEnd].name, lsPositionResult);
+            //         }
+            //     }
+            // }
+            // Direction
+            if (listData) {
+                for (var index = 0; index <= listData.length; index++) {
+                    var arrayPosition = listData[index];
+                    if (arrayPosition) {
+                        for (var i = 0; i <= arrayPosition.data.length; i++) {
+                            addMarker({ dataPosition: arrayPosition.data[i], title: arrayPosition.content[i] });
+                        }
+                        setDrawPath({ data: arrayPosition.data, color: listData[index].color });
+                    }
+                }
+                // Function Add Marker
+                function addMarker(props) {
+                    var infowindow = new google.maps.InfoWindow({
+                        content: props.title
+                    });
+                    var marker = new google.maps.Marker({
+                        position: props.dataPosition,
+                        map: map,
+                        title: props.title
+                    });
+                    marker.addListener('click', function () {
+                        infowindow.open(map, marker);
+                    });
+                }
+                // Set Drwaw Path
+                function setDrawPath(props) {
+                    var flightPath = new google.maps.Polyline({
+                        path: props.data,
+                        geodesic: true,
+                        strokeColor: props.color,
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                    });
+                    flightPath.setMap(map);
+                }
+            }
+            // Calculate two point google map api
+        };
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, startValue, endValue, address1, address2, lsPositionResult) {
+            var objectResult;
+            directionsService.route({
+                origin: startValue,
+                destination: endValue,
+                optimizeWaypoints: true,
+                travelMode: 'DRIVING'
+            }, function (response, status) {
+                if (status === 'OK') {
+                    // directionsDisplay.setDirections(response);
+                    var route = response.routes[0];
+                    for (var i = 0; i < route.legs.length; i++) {
+                        objectResult = {
+                            start: address1,
+                            end: address2,
+                            distance: route.legs[i].distance.text
+                        };
+                        lsPositionResult.push(objectResult);
+                    }
+                    console.log(JSON.stringify(lsPositionResult));
+                } else {
+                    console.log(status);
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>

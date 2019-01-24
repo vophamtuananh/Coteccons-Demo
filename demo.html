@@ -1,0 +1,224 @@
+<!-- Style to put some height on the map -->
+<style type="text/css">
+    #map-canvas {
+        height: 100%;
+    }
+    .note{
+        position: absolute;
+        bottom: 70px;
+        left: 45px;
+    }
+    p{
+        font-size: 24px;
+    }
+    button{
+        width: 200px;
+        padding: 10px 0;
+        background: #2684bb;
+        color: #FFF;
+        font-size: 18px;
+    }
+</style>
+<!-- Load the Google Maps aPI -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHeLJigXlN-myXIDGKVTP2JBGEFFaRvSk&sensor=false"></script>
+
+    <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+    <script language="javascript" src="libraries/p5.dom.js"></script>
+
+    <script language="javascript" type="text/javascript" src="model_classes/dia_diem.js"></script>
+    <script language="javascript" type="text/javascript" src="model_classes/hang_hoa.js"></script>
+    <script language="javascript" type="text/javascript" src="model_classes/phuong_tien.js"></script>
+    <script language="javascript" type="text/javascript" src="model_classes/gia.js"></script>
+    <script language="javascript" type="text/javascript" src="work/distances.js"></script>
+    <script language="javascript" type="text/javascript" src="work/dummy_data.js"></script>
+    <script language="javascript" type="text/javascript" src="work/route_finder.js"></script>
+    <script language="javascript" type="text/javascript" src="work/sketch.js"></script>
+
+<div id="map-canvas"></div>
+<div class="note">
+    <p>Tổng gía hiện tại : <span id="tong_gia"></span></p>
+    <button id="toi_uu_event">Tối Ưu</button>
+</div>
+<!-- All of the script for multiple requests -->
+<script type="text/javascript">
+
+    xuatGiaTruocKhiToiUu();
+
+    // Map Data
+    var geocoder = new google.maps.Geocoder;
+    // Initialise some variables
+    var directionsService = new google.maps.DirectionsService();
+    var num, map, data;
+    var requestArray = [], renderArray = [];
+    // A JSON Array containing some people/routes and the destinations/stops
+    var jsonArray = {
+        
+    };
+    var jsonTest = [
+    ];
+    var requestIndex = 0;
+    getLocationInfo();
+    function getLocationInfo() {
+        if (requestIndex == (hangHoas.length * 2)) {
+            console.log(jsonTest);
+            for (let index = 0; index < jsonTest.length; index++) {
+                const element = jsonTest[index];
+                jsonArray["Person " + index] = [element.diemDi , element.diemDen];
+            }
+            init(true);
+            return;
+        }
+        var index = requestIndex % hangHoas.length;
+        const hangHoa = hangHoas[index];
+        var diemDen = layDiaDiem(hangHoa.tenDiemDen);
+        var diemDi = layDiaDiem(hangHoa.tenDiemDi);
+        var isDiemDi = (requestIndex / hangHoas.length >= 1);
+        var diem = isDiemDi ? diemDi : diemDen;
+        geocodeLatLng(index, isDiemDi, geocoder, parseFloat(diem.kinhDo), parseFloat(diem.viDo), function () {
+            requestIndex++;
+            setTimeout(() => {
+                getLocationInfo();
+            }, 2000);
+        });
+    }
+    // var colourArray = ['navy', 'grey', 'fuchsia', 'black', 'white', 'lime', 'maroon', 'purple', 'aqua', 'red', 'green', 'silver', 'olive', 'blue', 'yellow', 'teal'];
+    function generateRequests() {
+        requestArray = [];
+        for (var route in jsonArray) {
+            var waypts = [];
+            var start, finish;
+            // lastpoint is used to ensure that duplicate waypoints are stripped
+            var lastpoint
+            data = jsonArray[route];
+            limit = data.length;
+            for (var waypoint = 0; waypoint < limit; waypoint++) {
+                if (data[waypoint] === lastpoint) {
+                    continue;
+                }
+                lastpoint = data[waypoint]
+                waypts.push({
+                    location: data[waypoint],
+                    stopover: true
+                });
+            }
+            start = (waypts.shift()).location;
+            finish = waypts.pop();
+            if (finish === undefined) {
+                finish = start;
+            } else {
+                finish = finish.location;
+            }
+            var request = {
+                origin: start,
+                destination: finish,
+                waypoints: waypts,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            requestArray.push({ "route": route, "request": request });
+        }
+        processRequests();
+    }
+    function processRequests() {
+        var i = 0;
+        function submitRequest() {
+            directionsService.route(requestArray[i].request, directionResults);
+        }
+        function directionResults(result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                renderArray[i] = new google.maps.DirectionsRenderer();
+                renderArray[i].setMap(map);
+                var hangHoa = hangHoas[i];
+                var b = hangHoa.maChuyenHangTanDung != null;
+                var color = b ? 'red' : '#333';
+                // Some unique options from the colorArray so we can see the routes
+                var hangTanDung = null;
+                if (b)
+                    hangTanDung = layHangHoaTheoMa(hangHoa.maChuyenHangTanDung); 
+                renderArray[i].setOptions({
+                    preserveViewport: true,
+                    suppressInfoWindows: true,
+                    polylineOptions: {
+                        strokeWeight: 4,
+                        strokeOpacity: 0.8,
+                        strokeColor: color
+                    },
+                    markerOptions: {
+                        title: hangHoa.soXeCan
+                    }
+                });
+                // Use this new renderer with the result
+                renderArray[i].setDirections(result);
+                // and start the next request
+                nextRequest();
+            }
+        }
+        function nextRequest() {
+            // Increase the counter
+            i++;
+            // Make sure we are still waiting for a request
+            if (i >= requestArray.length) {
+                // No more to do
+                return;
+            }
+            // Submit another request
+            setTimeout(() => {
+                submitRequest();
+            }, 500);
+        }
+        // This request is just to kick start the whole process
+        submitRequest();
+    }
+    // Called Onload
+    function geocodeLatLng(i, diemDi, geocoder, latAddress, longAddress, callback) {
+        var latlng = { lat: latAddress, lng: longAddress };
+        geocoder.geocode({ 'location': latlng }, function (results, status) {
+            console.log("Google Map API", i);
+            if (status === 'OK') {
+                if (results[0]) {
+                    var diadiem = jsonTest[i];
+                    var diem = diemDi ? "diemDi" : "diemDen";
+                    if (!diadiem) {
+                        diadiem = {};
+                        diadiem[diem] = results[0].formatted_address;
+                        jsonTest.push(diadiem);
+                    } else {
+                        diadiem[diem] = results[0].formatted_address;
+                        jsonTest[i] = diadiem;
+                    }
+                } else {
+                    console.log('No results found');
+                }
+            } else {
+                console.log('Geocoder failed due to: ' + status);
+            }
+            callback();
+        });
+    }
+    function init(isRequest = false) {
+        var geocoder = new google.maps.Geocoder;
+        // Some basic map setup (from the API docs)
+        var mapOptions = {
+            center: new google.maps.LatLng(10.762622, 106.660172),
+            zoom: 8,
+            mapTypeControl: false,
+            streetViewControl: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        // Start the request making
+        if (isRequest){
+            generateRequests();
+        }
+    }
+    google.maps.event.addDomListener(window, 'load', init);
+</script>
+<script type="text/javascript">
+    document.getElementById("toi_uu_event").addEventListener("click", function(){
+        taiKhoangCach();
+        taoHanhTrinh();
+        xuatKetQuaDaToiUu();
+        init(true);
+    });
+</script>
+
+<!-- Somewhere in the DOM for the map to be rendered -->
